@@ -36,21 +36,20 @@ class _WeatherPageState extends State<WeatherPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple,
-        title: Text(
-          "Weather Datas",
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
+          backgroundColor: Color(0xFF164863),
+          elevation: 2,
+          shadowColor: Colors.black, // Small shadow
+          title: Text(
+            "Weather Data",
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.2,
+                color: Colors.white),
           ),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
+          centerTitle: false,
+          iconTheme: IconThemeData(color: Colors.white) // Center the title
+          ),
       body: SingleChildScrollView(child: _buildUI()),
     );
   }
@@ -84,9 +83,7 @@ class _WeatherPageState extends State<WeatherPage> {
     return Text(
       _weather?.areaName ?? "",
       style: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w500,
-      ),
+          fontSize: 25, fontWeight: FontWeight.w700, letterSpacing: 1),
     );
   }
 
@@ -100,7 +97,6 @@ class _WeatherPageState extends State<WeatherPage> {
             fontSize: 35,
           ),
         ),
-        SizedBox(height: 10),
         Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -162,9 +158,9 @@ class _WeatherPageState extends State<WeatherPage> {
 
   Widget _extraInfo() {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.deepPurpleAccent,
+        color: Color(0xFF427D9D),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -172,41 +168,54 @@ class _WeatherPageState extends State<WeatherPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                "Max: ${_weather?.tempMax?.celsius?.toStringAsFixed(0)}° C",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                ),
+              _infoBox(
+                icon: Icons.thermostat_outlined,
+                label:
+                    "Max: ${_weather?.tempMax?.celsius?.toStringAsFixed(0)}° C",
               ),
-              Text(
-                "Min: ${_weather?.tempMin?.celsius?.toStringAsFixed(0)}° C",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                ),
-              )
+              _infoBox(
+                icon: Icons.thermostat_outlined,
+                label:
+                    "Min: ${_weather?.tempMin?.celsius?.toStringAsFixed(0)}° C",
+              ),
             ],
           ),
+          SizedBox(height: 6),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                "Wind: ${_weather?.windSpeed?.toStringAsFixed(0)}m/s",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                ),
+              _infoBox(
+                icon: Icons.speed,
+                label: "Wind: ${_weather?.windSpeed?.toStringAsFixed(0)} m/s",
               ),
-              Text(
-                "Humidity: ${_weather?.humidity?.toStringAsFixed(0)}%",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                ),
-              )
+              _infoBox(
+                icon: Icons.water_drop_outlined,
+                label: "Humidity: ${_weather?.humidity?.toStringAsFixed(0)}%",
+              ),
             ],
-          )
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _infoBox({required IconData icon, required String label}) {
+    return Container(
+      padding: EdgeInsets.all(3),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: Colors.white,
+          ),
+          SizedBox(width: 8),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 15,
+            ),
+          ),
         ],
       ),
     );
@@ -222,7 +231,7 @@ class _WeatherPageState extends State<WeatherPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 6),
         SizedBox(
           height: 120, // Adjust this height as needed
           child: ListView.builder(
